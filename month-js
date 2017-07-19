@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>demo</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<select name="" id="js-date-list">
+	</select>
+</body>
+</html>
+<script type="text/javascript">
+window.onload=function(){
+    var timeList = (function(obj){
+    	var tDate = {}
+      let firstDate = new obj.Date();
+      let temDate = (firstDate.getFullYear() + '-' + (firstDate.getMonth() + 1))
+      tDate.nowDate = temDate
+      tDate.dateList = []
+      tDate.upDate = function(){
+         tDate.dateList = []
+         tDate.dateList.push(tDate.nowDate)
+         for (let s = 0; s < 6; s++) {
+            let temporaryDate = tDate.nextDate(1, tDate.dateList[tDate.dateList.length - 1])
+            tDate.dateList.push(temporaryDate)
+            tDate.nowDate = temporaryDate
+         }
+      }
+      tDate.downDate = function() {
+			tDate.dateList = []
+			tDate.dateList.push(tDate.nowDate)
+			for (let s = 0; s < 6; s++) {
+            let temporaryDate = tDate.nextDate(-1, tDate.dateList[tDate.dateList.length - 1])
+				tDate.dateList.push(temporaryDate)
+            tDate.nowDate = temporaryDate
+			}
+		}
+		tDate.nextDate = function(otype, oDate) {
+			let dateArr = oDate.split('-')
+   		let temporaryDate = new Date(dateArr[0], dateArr[1] -1 , 15, 0, 0, 0);
+			let nextporaryDate = ''
+			if (otype > 0) {
+				nextporaryDate = temporaryDate.getTime() + 30 * 24 * 60 * 60 * 1000
+			} else {
+				nextporaryDate = temporaryDate.getTime() - 30 * 24 * 60 * 60 * 1000
+			} 
+			let snextDate = new Date(nextporaryDate)
+         let year = snextDate.getFullYear();
+         let month =  (snextDate.getMonth() + 1) < 10 ? '0' + (snextDate.getMonth() + 1) : (snextDate.getMonth() + 1) 
+			return   year + '-' + month
+		}
+		return function (otype) {
+			if (otype) {
+				tDate.upDate()
+			} else {
+				tDate.downDate()
+			}
+			return tDate.dateList
+		}
+ })(window)
+   let dateList = timeList(false);
+       dateList = timeList(false);
+       dateList = timeList(false);
+       dateList = timeList(true);
+       dateList = timeList(true);
+       dateList = timeList(true);
+       dateList = timeList(true);
+       dateList = timeList(true);
+   let options = ''
+   for (let i in dateList) {
+       options += '<option>' + dateList[i] + '</option>'  
+   }
+   document.getElementById('js-date-list').innerHTML = options
+}
+</script>
